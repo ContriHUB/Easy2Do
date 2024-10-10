@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mukudev.easy2do.Fragments.Fragment2DayRule;
@@ -16,6 +17,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Handler to make splash screen 2 secs long
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Set the theme to your main app theme
+                setTheme(R.style.splashScreenTheme);
+            }
+        }, 2000);
+        //handler
+
+        setTheme(R.style.Base_Theme_Easy2Do);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -30,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set the BottomNavigationView listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull android.view.MenuItem item) {
                 Fragment selectedFragment = null;
