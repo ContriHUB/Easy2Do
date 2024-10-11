@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:theme="@style/Base.Theme.Easy2Do">
 
     <TextView
         android:id="@+id/text_2priority_task_rule"
