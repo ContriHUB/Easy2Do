@@ -1,7 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Easy2Do" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Use black as the primary background and white for text in dark mode -->
+        <item name="colorPrimary">@color/black</item> <!-- Text color on primary surfaces -->
+        <item name="colorPrimaryVariant">@color/ebony</item>
+        <item name="colorOnPrimary">@color/white</item> <!-- Background color -->
+        <item name="colorSecondary">@color/gray</item>
+        <item name="colorOnSecondary">@color/white</item>
     </style>
 </resources>

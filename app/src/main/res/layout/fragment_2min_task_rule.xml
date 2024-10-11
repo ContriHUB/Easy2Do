@@ -1,36 +1,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Base.Theme.Easy2Do">
+
+    <LinearLayout
+        android:id="@+id/timeContainer"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/circle"
+        android:gravity="center">
 
     <TextView
+        android:gravity="center"
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="02:00"
         android:fontFamily="sans-serif-black"
-        android:textSize="48sp"
-        android:layout_centerInParent="true"/>
+        android:textSize="64sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:layout_gravity="center"/> <!-- Center the text in the frame -->
+
+</LinearLayout>
 
 
     <TextView
         android:id="@+id/timerBrief"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get things done faster!\n\nIf a task takes 2 minutes or less, do it now!\n\nUse this timer to quickly tackle small tasks and avoid procrastination!"
-        android:textSize="18sp"
+        android:layout_above="@+id/timeContainer"
+        android:layout_alignParentTop="true"
         android:layout_marginHorizontal="15dp"
-        android:layout_above="@+id/timerTextView"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="10dp"
+        android:text="If a task takes 2 minutes or less, do it now!\n\nUse this timer to quickly tackle small tasks and avoid procrastination!"
         android:textAlignment="center"
-        android:layout_centerInParent="true"/>
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnPrimary"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        style="@style/customButton"
         android:id="@+id/startTimerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start!"
-        android:layout_below="@id/timerTextView"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_below="@id/timeContainer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="30dp"/>
 
 </RelativeLayout>

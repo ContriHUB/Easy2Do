@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.mukudev.easy2do.R;
 public class Fragment2MinTaskRule extends Fragment {
     private TextView timerTextView;
     private Button startTimerButton;
+
+    private boolean isClicked = false;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -27,8 +30,20 @@ public class Fragment2MinTaskRule extends Fragment {
 
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            //animation for button click
             public void onClick(View v) {
-                startTimer();
+                startTimerButton.setScaleX(0.9f);
+                startTimerButton.setScaleY(0.9f);
+
+                // Restore the button size after a short delay
+                startTimerButton.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startTimerButton.setScaleX(1f);
+                        startTimerButton.setScaleY(1f);
+                    }
+                }, 100);//animation for button click
+                if(!isClicked) startTimer();
             }
         });
 
@@ -37,10 +52,12 @@ public class Fragment2MinTaskRule extends Fragment {
 
     private void startTimer() {
         // Reset the timer text to 2 minutes
+        isClicked = true;
         timerTextView.setText("02:00");
+        timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,64);
 
         // Create a CountDownTimer for 2 minutes (120000 milliseconds)
-        countDownTimer = new CountDownTimer(10000, 1000) {
+        countDownTimer = new CountDownTimer(120000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 // Update the timer text every second
@@ -53,8 +70,10 @@ public class Fragment2MinTaskRule extends Fragment {
             public void onFinish() {
                 // Timer finished, play sound
                 timerTextView.setText("Time's up!");
+                timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
                 playSound();
                 startTimerButton.setText("Restart!");
+                isClicked = false;
             }
         }.start();
     }
