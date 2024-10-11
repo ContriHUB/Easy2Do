@@ -45,17 +45,41 @@ public class Fragment2MinTaskRule extends Fragment {
                     }
                 }, 100);//animation for button click
                 //check if the button is clicked and then only call startTimer
-                if(!isClicked) startTimer();
+                if(!isClicked) startPreparationTimer();
             }
         });
 
         return view;
     }
 
-    private void startTimer() {
-        // Reset the timer text to 2 minutes
+
+    private void startPreparationTimer() {
         //on start set to true to avoid flickering of timer when button is clicked while it is running
         isClicked = true;
+        // Set text to inform the user to get ready
+        timerTextView.setText("Get ready in 5 seconds...");
+        timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+
+        isClicked = true; // Mark that the button has been clicked
+
+        // Create a CountDownTimer for 5 seconds (5000 milliseconds)
+        new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Update the text to show the remaining time
+                int secondsRemaining = (int) (millisUntilFinished / 1000);
+                timerTextView.setText("Get ready in " + secondsRemaining + " seconds...");
+            }
+
+            @Override
+            public void onFinish() {
+                // After preparation time, start the main task timer
+                startTimer();
+            }
+        }.start();
+    }
+    private void startTimer() {
+        // Reset the timer text to 2 minutes
         timerTextView.setText("02:00");
         timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,64);
 
