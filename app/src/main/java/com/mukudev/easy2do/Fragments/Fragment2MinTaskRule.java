@@ -18,6 +18,7 @@ public class Fragment2MinTaskRule extends Fragment {
     private TextView timerTextView;
     private Button startTimerButton;
 
+    //boolean to check if button is clicked
     private boolean isClicked = false;
     private CountDownTimer countDownTimer;
 
@@ -43,16 +44,42 @@ public class Fragment2MinTaskRule extends Fragment {
                         startTimerButton.setScaleY(1f);
                     }
                 }, 100);//animation for button click
-                if(!isClicked) startTimer();
+                //check if the button is clicked and then only call startTimer
+                if(!isClicked) startPreparationTimer();
             }
         });
 
         return view;
     }
 
+
+    private void startPreparationTimer() {
+        //on start set to true to avoid flickering of timer when button is clicked while it is running
+        isClicked = true;
+        // Set text to inform the user to get ready
+        timerTextView.setText("Get ready in 5 seconds...");
+        timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+
+        isClicked = true; // Mark that the button has been clicked
+
+        // Create a CountDownTimer for 5 seconds (5000 milliseconds)
+        new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Update the text to show the remaining time
+                int secondsRemaining = (int) (millisUntilFinished / 1000);
+                timerTextView.setText("Get ready in " + secondsRemaining + " seconds...");
+            }
+
+            @Override
+            public void onFinish() {
+                // After preparation time, start the main task timer
+                startTimer();
+            }
+        }.start();
+    }
     private void startTimer() {
         // Reset the timer text to 2 minutes
-        isClicked = true;
         timerTextView.setText("02:00");
         timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,64);
 
@@ -73,6 +100,7 @@ public class Fragment2MinTaskRule extends Fragment {
                 timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
                 playSound();
                 startTimerButton.setText("Restart!");
+                //on finish set to false so that the timer can start again on clicking button
                 isClicked = false;
             }
         }.start();
