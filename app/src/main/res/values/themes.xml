@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/honey_dew</item>
         <item name="colorOnPrimary">@color/black</item>
 
-        <item name="colorSecondary">@color/deep_purple</item>
+        <item name="colorSecondary">@color/jade_green</item>
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="fontFamily">@font/font</item>

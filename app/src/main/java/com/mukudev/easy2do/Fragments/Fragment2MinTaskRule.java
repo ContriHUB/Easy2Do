@@ -17,6 +17,8 @@ import com.mukudev.easy2do.R;
 public class Fragment2MinTaskRule extends Fragment {
     private TextView timerTextView;
     private Button startTimerButton;
+
+    private boolean isClicked = false;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -41,7 +43,7 @@ public class Fragment2MinTaskRule extends Fragment {
                         startTimerButton.setScaleY(1f);
                     }
                 }, 100);//animation for button click
-                startTimer();
+                if(!isClicked) startTimer();
             }
         });
 
@@ -50,11 +52,12 @@ public class Fragment2MinTaskRule extends Fragment {
 
     private void startTimer() {
         // Reset the timer text to 2 minutes
+        isClicked = true;
         timerTextView.setText("02:00");
         timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,64);
 
         // Create a CountDownTimer for 2 minutes (120000 milliseconds)
-        countDownTimer = new CountDownTimer(10000, 1000) {
+        countDownTimer = new CountDownTimer(120000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 // Update the timer text every second
@@ -70,6 +73,7 @@ public class Fragment2MinTaskRule extends Fragment {
                 timerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
                 playSound();
                 startTimerButton.setText("Restart!");
+                isClicked = false;
             }
         }.start();
     }
