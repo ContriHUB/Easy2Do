@@ -7,29 +7,59 @@
     android:theme="@style/Base.Theme.Easy2Do">
     <!--    android:gravity="center"-->
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/headtab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:background="?attr/colorSecondary"
+        android:gravity="left"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_marginLeft="0dp"
+            android:layout_marginBottom="12dp"
+            android:text="Building habits can be tough!"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="70dp"
-        android:text="Building habits can be tough!\n\nBut don't let more than 2 days go by without doing the activity you're trying to make a habit!"
+        android:layout_marginTop="7dp"
+        android:text="\n\nDon't let more than 2 days go by without doing the activity you're trying to make a habit!"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"
+        android:paddingTop="7dp"
+        app:layout_constraintTop_toBottomOf="@id/headtab"
+        android:textColor="?attr/colorOnPrimary"/>
 
 
     <CalendarView
-
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dateTextAppearance="@style/CalenderViewDateCustomText"
+        android:layout_marginHorizontal="10dp"
+        android:dateTextAppearance="@style/customCalendarTheme"
+        android:weekDayTextAppearance="@style/customCalendarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        android:background="@drawable/rectangle"/>
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +68,8 @@
         android:textSize="18sp"
         android:layout_marginHorizontal="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
+        android:textColor="?attr/colorOnPrimary"/>
 
 
 

@@ -2,7 +2,9 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="linen">#FAF0E6</color>
-    <color name="secondaryColor">#C1D4EF</color>
+    <color name="honey_dew">#F0FFF0</color>
+    <color name="deep_purple">#4a00e0</color>
     <color name="green">#41A317</color>
+    <color name="gray">#2A2828</color>
+    <color name="ebony">#555D50</color>
 </resources>

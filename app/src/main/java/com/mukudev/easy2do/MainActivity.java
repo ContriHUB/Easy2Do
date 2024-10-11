@@ -3,9 +3,10 @@ package com.mukudev.easy2do;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mukudev.easy2do.Fragments.Fragment2DayRule;
@@ -14,20 +15,11 @@ import com.mukudev.easy2do.Fragments.Fragment2MinTaskRule;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Handler to make splash screen 2 secs long
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Set the theme to your main app theme
-                setTheme(R.style.splashScreenTheme);
-            }
-        }, 2000);
-        //handler
-
-        setTheme(R.style.Base_Theme_Easy2Do);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -61,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Replace the fragment
+                //added transition for fragment change
                 getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .replace(R.id.fragment_container, selectedFragment)
                         .commit();
 

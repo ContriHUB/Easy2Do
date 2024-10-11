@@ -2,12 +2,25 @@
     <!-- Base application theme. -->
     <!-- Base application theme. -->
     <style name="Base.Theme.Easy2Do" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/honey_dew</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="colorSecondary">@color/deep_purple</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="fontFamily">@font/font</item>
+
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowFullscreen">true</item>
+
+
     </style>
 
-    <style name="splashScreenTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_image</item>
-        <item name="android:statusBarColor">@color/black</item>
+
+
+    <style name="splashScreenTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="background">@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
     </style>
 </resources>
