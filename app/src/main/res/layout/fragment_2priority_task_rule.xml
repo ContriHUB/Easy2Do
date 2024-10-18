@@ -5,6 +5,36 @@
     android:gravity="center"
     android:theme="@style/Base.Theme.Easy2Do">
 
+    <EditText
+        android:id="@+id/task1_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your first priority task" />
+
+    <CheckBox
+        android:id="@+id/task1_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mark as complete" />
+
+    <EditText
+        android:id="@+id/task2_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your second priority task" />
+
+    <CheckBox
+        android:id="@+id/task2_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mark as complete" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Tasks" />
+
     <TextView
         android:id="@+id/text_2priority_task_rule"
         android:layout_width="wrap_content"
