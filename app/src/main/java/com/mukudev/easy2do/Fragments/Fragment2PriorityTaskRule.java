@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import java.util.Random;
+import java.util.Calendar;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Context;
@@ -50,27 +54,68 @@ public class Fragment2PriorityTaskRule extends Fragment {
             editor.apply();
         });
         
-        task1Checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                task1Input.setEnabled(false);
-                task1Checkbox.setEnabled(false);
-                motivationalMessage.setText("Great, you have your first priority task");
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("task1 Completed", true);
-                editor.apply();
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+        if (currentHour == 0 && currentMinute == 0) {
+            task1Input.setText("");
+            task2Input.setText("");
+            task1Checkbox.setChecked(false);
+            task2Checkbox.setChecked(false);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("task 1", "");
+            editor.putString("task 2", "");
+            editor.putBoolean("task 1 Completed", false);
+            editor.putBoolean("task 2 Completed", false);
+            editor.apply();
+        }
+
+        task1Checkbox.setOnClickListener(v -> {
+            if (task1Checkbox.isChecked()) {
+                new AlertDialog.Builder(getContext())
+                    .setTitle("Confirm")
+                    .setMessage("Are you sure you want to mark this task as completed?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        task1Input.setEnabled(false);
+                        task1Checkbox.setEnabled(false);
+                        showMotivationalMessage();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("task 1 Completed", true);
+                        editor.apply();
+                    })
+                    .setNegativeButton("No", (dialog, which) -> task1Checkbox.setChecked(false))
+                    .show();
             }
         });
-        
-        task2Checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                task2Input.setEnabled(false);
-                task2Checkbox.setEnabled(false);
-                motivationalMessage.setText("Awesome! You've completed both priority tasks!");
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("task2Completed", true);
-                editor.apply();
+
+        task2Checkbox.setOnClickListener(v -> {
+            if (task2Checkbox.isChecked()) {
+                new AlertDialog.Builder(getContext())
+                    .setTitle("Confirm")
+                    .setMessage("Are you sure you want to mark this task as completed?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        task2Input.setEnabled(false);
+                        task2Checkbox.setEnabled(false);
+                        showMotivationalMessage();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("task 2 Completed", true);
+                        editor.apply();
+                    })
+                    .setNegativeButton("No", (dialog, which) -> task2Checkbox.setChecked(false))
+                    .show();
             }
         });
+
+        return view;
+    }
+
+    private void showMotivationalMessage() {
+        String[] messages = getResources().getStringArray(R.array.motivational_messages);
+        Random random = new Random();
+        String message = messages[random.nextInt(messages.length)];
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
         return view;
     }
 }
