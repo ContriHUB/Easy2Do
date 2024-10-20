@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Easy 2 Do</string>
-    <string name="motivational_message_1">Great, you have your first priority task</string>
-    <string name="motivational_message_2">Awesome! You've completed both priority tasks!</string>
-    <string name="motivational_message_default">Complete your tasks to see motivational messages!</string>
+    <string-array name="motivational_messages">
+        <item>Great, you have your first priority task</item>
+        <item>Awesome! You've completed both priority tasks!</item>
+        <item>Keep going, you're doing great!</item>
+        <item>Well done! Keep up the good work!</item>
+        <item>You're on the right track!</item>
+    </string-array>
 </resources>

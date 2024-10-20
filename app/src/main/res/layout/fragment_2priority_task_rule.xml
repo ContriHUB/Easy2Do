@@ -9,7 +9,10 @@
         android:id="@+id/task1_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your first priority task" />
+        android:hint="Enter your first priority task"
+        android:layout_margin="16dp"
+        android:padding="10dp"
+        android:background="@drawable/custom_edittext_background" />
 
     <CheckBox
         android:id="@+id/task1_checkbox"
