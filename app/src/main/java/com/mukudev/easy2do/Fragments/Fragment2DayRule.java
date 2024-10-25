@@ -20,11 +20,11 @@ import android.widget.TextView;
 import com.mukudev.easy2do.R;
 
 public class Fragment2DayRule extends Fragment {
-    private TextView stayOnTrackTextView;
     private Button markDoneButton;
     private Set<String> markedDays;
     private SharedPreferences sharedPreferences;
     private CalendarView calendarView;
+    private TextView streakTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,21 +33,14 @@ public class Fragment2DayRule extends Fragment {
 
         calendarView = view.findViewById(R.id.calendarView);
         markDoneButton = view.findViewById(R.id.markDoneButton);
-        
-        // Create TextView programmatically if it's not in the layout
-        stayOnTrackTextView = new TextView(getContext());
-        stayOnTrackTextView.setLayoutParams(new ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT));
-        stayOnTrackTextView.setPadding(16, 16, 16, 16);
-        ((ViewGroup) view).addView(stayOnTrackTextView);
+        streakTextView = view.findViewById(R.id.streakTextView);
 
         sharedPreferences = requireContext().getSharedPreferences("HabitTracker", Context.MODE_PRIVATE);
         markedDays = new HashSet<>(sharedPreferences.getStringSet("markedDays", new HashSet<>()));
 
         setupCalendarView();
         setupMarkDoneButton();
-        updateStayOnTrackMessage();
+        updateStreak();
 
         return view;
     }
@@ -74,6 +67,9 @@ public class Fragment2DayRule extends Fragment {
                 }
             }
         });
+
+        calendarView.setDate(today.getTimeInMillis(), false, true);
+        highlightDates();
     }
 
     private void setupMarkDoneButton() {
@@ -108,36 +104,17 @@ public class Fragment2DayRule extends Fragment {
             editor.putStringSet("markedDays", markedDays);
             editor.apply();
 
-            updateStayOnTrackMessage();
             Toast.makeText(getContext(), "Marked as done!", Toast.LENGTH_SHORT).show();
         }
         updateMarkDoneButtonState(calendar);
+        updateStreak();
+        highlightDates();
     }
 
     private void updateMarkDoneButtonState(Calendar selectedDate) {
         boolean isToday = isToday(selectedDate);
         String currentDate = formatDate(selectedDate);
         markDoneButton.setEnabled(isToday && !markedDays.contains(currentDate));
-    }
-
-    private void updateStayOnTrackMessage() {
-        int streak = calculateStreak();
-        stayOnTrackTextView.setText("Stay on track! Current streak: " + streak + " days");
-    }
-
-    private int calculateStreak() {
-        Calendar calendar = Calendar.getInstance();
-        int streak = 0;
-        while (true) {
-            String date = formatDate(calendar);
-            if (markedDays.contains(date)) {
-                streak++;
-                calendar.add(Calendar.DAY_OF_MONTH, -1);
-            } else {
-                break;
-            }
-        }
-        return streak;
     }
 
     private String formatDate(Calendar calendar) {
@@ -153,12 +130,55 @@ public class Fragment2DayRule extends Fragment {
                date.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH);
     }
 
-    // Removed duplicate methods
-
     private boolean isCurrentDateMarked() {
         Calendar calendar = Calendar.getInstance();
         String currentDate = formatDate(calendar);
         return markedDays.contains(currentDate);
+    }
+
+    private void updateStreak() {
+        int streak = calculateStreak();
+        streakTextView.setText("Current Streak: " + streak + " days");
+    }
+
+    private int calculateStreak() {
+        Calendar today = Calendar.getInstance();
+        int streak = 0;
+
+        while (markedDays.contains(formatDate(today))) {
+            streak++;
+            today.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        return streak;
+    }
+
+    private View getDayViewByDate(long dateInMillis) {
+        // Implement the logic to get the day view by date
+        // This is a placeholder implementation and may need to be adjusted based on your CalendarView implementation
+        return calendarView.findViewWithTag(dateInMillis);
+    }
+
+    private void highlightDates() {
+        for (String date : markedDays) {
+            // Logic to highlight the marked dates
+            String[] parts = date.split("/");
+            int day = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]) - 1; // Calendar months are 0-based
+            int year = Integer.parseInt(parts[2]);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month, day);
+
+            long dateInMillis = calendar.getTimeInMillis();
+            calendarView.setDate(dateInMillis, false, true);
+
+            // Assuming you have a method to get the day view by date
+            View dayView = getDayViewByDate(dateInMillis);
+            if (dayView != null) {
+                dayView.setBackgroundResource(R.drawable.dark_red_circle);
+            }
+        }
     }
 
     @Override
@@ -166,6 +186,6 @@ public class Fragment2DayRule extends Fragment {
         super.onResume();
         setupCalendarView();
         updateMarkDoneButtonState(Calendar.getInstance());
-        updateStayOnTrackMessage();
+        updateStreak();
     }
 }

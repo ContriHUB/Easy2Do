@@ -25,10 +25,12 @@
         <item name="colorControlHighlight">@color/white</item>
         <item name="android:textColor">@drawable/selector</item>
     </style>
-
     <style name="MarkedDateStyle">
         <item name="android:textColor">#FF0000</item> <!-- Red color for marked dates -->
         <item name="android:textStyle">bold</item>
+    </style>
+    <style name="DarkRedCircle">
+        <item name="android:background">@drawable/dark_red_circle</item>
     </style>
 
     <style name="GrayOutDateStyle">
