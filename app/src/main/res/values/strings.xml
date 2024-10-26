@@ -1,10 +1,3 @@
 <resources>
     <string name="app_name">Easy 2 Do</string>
-    <string-array name="motivational_messages">
-        <item>Great, you have your first priority task</item>
-        <item>Awesome! You've completed both priority tasks!</item>
-        <item>Keep going, you're doing great!</item>
-        <item>Well done! Keep up the good work!</item>
-        <item>You're on the right track!</item>
-    </string-array>
 </resources>
