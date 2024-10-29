@@ -19,15 +19,16 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.mukudev.easy2do.R;
+import com.google.android.material.card.MaterialCardView;
 
 public class Fragment2PriorityTaskRule extends Fragment {
     // List of motivational quotes
     private static final String[] quotes = {
-        "Great job on completing your first task!",
-        "Awesome! You've completed both tasks!",
-        "Keep up the great work!",
-        "You're doing amazing!",
-        "Fantastic effort!"
+            "Great job on completing your first task!",
+            "Keep up the great work!",
+            "You're doing amazing!",
+            "You're making excellent progress!",
+            "Well done on prioritizing your tasks!"
     };
 
     // Function to get a random quote
@@ -36,30 +37,45 @@ public class Fragment2PriorityTaskRule extends Fragment {
         return quotes[index];
     }
 
-    private void handleTaskCompletion(CheckBox checkbox, EditText input, String taskKey, String message, SharedPreferences.Editor editor, CheckBox nextTaskCheckbox) {
+    private void handleTaskCompletion(CheckBox checkbox, EditText input, String taskKey, String message, SharedPreferences.Editor editor, View cardView) {
         new AlertDialog.Builder(getContext())
-            .setTitle("Confirm Task Completion")
-            .setMessage("Are you sure you want to mark this task as completed? This action cannot be undone.")
-            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                input.setEnabled(false);
-                checkbox.setEnabled(false);
-                editor.putBoolean(taskKey, true);
-                editor.apply();
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                if (nextTaskCheckbox != null) {
-                    nextTaskCheckbox.setEnabled(true);
-                }
-                String quote = getRandomQuote();
-                TextView motivationalMessage = getView().findViewById(R.id.motivational_message);
-                motivationalMessage.setText(quote);
-                motivationalMessage.setVisibility(View.VISIBLE);
-            })
-            .setNegativeButton(android.R.string.no, (dialog, which) -> {
-                checkbox.setChecked(false);
-            })
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show();
+                .setTitle("Confirm Task Completion")
+                .setMessage("Are you sure you want to mark this task as completed? This action cannot be undone.")
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    input.setEnabled(false);
+                    checkbox.setEnabled(false);
+                    editor.putBoolean(taskKey, true);
+                    editor.apply();
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+
+                    boolean bothTasksCompleted = getActivity().getSharedPreferences("PriorityTasks", Context.MODE_PRIVATE)
+                            .getBoolean("task1_completed", false) && getActivity().getSharedPreferences("PriorityTasks", Context.MODE_PRIVATE)
+                            .getBoolean("task2_completed", false);
+
+                    TextView motivationalMessage = getView().findViewById(R.id.motivational_message);
+                    if (bothTasksCompleted) {
+                        motivationalMessage.setText("Awesome! You've completed both tasks!");
+                    } else if (getRandomQuote().equals("Fantastic effort!")) {
+                        String quote = getRandomQuote();
+                        while (quote.equals("Fantastic effort!")) {
+                            quote = getRandomQuote();
+                        }
+                        motivationalMessage.setText(quote);
+                    } else {
+                        motivationalMessage.setText(getRandomQuote());
+                    }
+                    motivationalMessage.setVisibility(View.VISIBLE);
+                })
+                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                    checkbox.setChecked(false);
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +87,8 @@ public class Fragment2PriorityTaskRule extends Fragment {
         EditText task2Input = view.findViewById(R.id.task2_input);
         CheckBox task2Checkbox = view.findViewById(R.id.task2_checkbox);
         TextView motivationalMessage = view.findViewById(R.id.motivational_message);
+        View task1Card = view.findViewById(R.id.task1_card);
+        View task2Card = view.findViewById(R.id.task2_card);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PriorityTasks", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -97,64 +115,34 @@ public class Fragment2PriorityTaskRule extends Fragment {
             task1Input.setEnabled(true);
             task2Input.setEnabled(true);
             task1Checkbox.setEnabled(true);
-            task2Checkbox.setEnabled(false);  // Disable Task 2 checkbox on reset
+            task2Checkbox.setEnabled(true);  // Enable both checkboxes
             motivationalMessage.setVisibility(View.GONE);
             task1Completed = false;
             task2Completed = false;
         } else {
-            // Load saved tasks
+            // Restore saved state
             task1Input.setText(sharedPreferences.getString("task1", ""));
             task2Input.setText(sharedPreferences.getString("task2", ""));
             task1Checkbox.setChecked(task1Completed);
             task2Checkbox.setChecked(task2Completed);
+            task1Input.setEnabled(!task1Completed);
+            task2Input.setEnabled(!task2Completed);
+            task1Checkbox.setEnabled(!task1Completed);
+            task2Checkbox.setEnabled(!task2Completed);
         }
 
-        // Update UI based on task completion status
-        if (task1Completed) {
-            task1Input.setEnabled(false);
-            task1Checkbox.setEnabled(false);
-            task2Checkbox.setEnabled(true);
-            String quote1 = getRandomQuote();
-            motivationalMessage.setText(quote1);
-            motivationalMessage.setVisibility(View.VISIBLE);
-        } else {
-            task2Checkbox.setEnabled(false);
-        }
-        
-        if (task2Completed) {
-            task2Input.setEnabled(false);
-            task2Checkbox.setEnabled(false);
-            String quote2 = getRandomQuote();
-            motivationalMessage.setText(quote2);
-            motivationalMessage.setVisibility(View.VISIBLE);
-        }
-
-        // Set up checkbox listeners
-        task1Checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                handleTaskCompletion(task1Checkbox, task1Input, "task1_completed", "Great job on completing your first task!", editor, task2Checkbox);
-            }
-        });
-
-        task2Checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                handleTaskCompletion(task2Checkbox, task2Input, "task2_completed", "Awesome! You've completed both tasks!", editor, null);
-            }
-        });
-
-        // Save tasks on input change
         task1Input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 editor.putString("task1", s.toString());
                 editor.apply();
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
 
         task2Input.addTextChangedListener(new TextWatcher() {
@@ -162,15 +150,28 @@ public class Fragment2PriorityTaskRule extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 editor.putString("task2", s.toString());
                 editor.apply();
             }
+        });
 
-            @Override
-            public void afterTextChanged(Editable s) {}
+        task1Checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                handleTaskCompletion(task1Checkbox, task1Input, "task1_completed", "Task 1 completed!", editor, task1Card);
+            }
+        });
+
+        task2Checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                handleTaskCompletion(task2Checkbox, task2Input, "task2_completed", "Task 2 completed!", editor, task2Card);
+            }
         });
 
         return view;
     }
+
 }
